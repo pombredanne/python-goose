@@ -28,7 +28,9 @@ from base import BaseMockTests, MockResponse
 from goose import Goose
 from goose.utils import FileHelper
 from goose.configuration import Configuration
-from goose.text import StopWordsChinese, StopWordsArabic
+from goose.text import StopWordsChinese
+from goose.text import StopWordsArabic
+from goose.text import StopWordsKorean
 
 
 CURRENT_PATH = os.path.dirname(os.path.abspath(__file__))
@@ -258,7 +260,6 @@ class TestExtractions(TestExtractionBase):
     #     article = self.getArticle()
     #     fields = ['cleaned_text']
     #     self.runArticleAssertions(article=article, fields=fields)
-
     def test_time(self):
         article = self.getArticle()
         fields = ['cleaned_text', 'title']
@@ -290,6 +291,11 @@ class TestExtractions(TestExtractionBase):
         self.runArticleAssertions(article=article, fields=fields)
 
     def test_businessinsider2(self):
+        article = self.getArticle()
+        fields = ['cleaned_text']
+        self.runArticleAssertions(article=article, fields=fields)
+
+    def test_businessinsider3(self):
         article = self.getArticle()
         fields = ['cleaned_text']
         self.runArticleAssertions(article=article, fields=fields)
@@ -334,6 +340,16 @@ class TestExtractions(TestExtractionBase):
         fields = ['cleaned_text', 'meta_description', 'meta_keywords']
         self.runArticleAssertions(article=article, fields=fields)
 
+    def test_mashable_issue_74(self):
+        article = self.getArticle()
+        fields = ['cleaned_text']
+        self.runArticleAssertions(article=article, fields=fields)
+
+    def test_usatoday_issue_74(self):
+        article = self.getArticle()
+        fields = ['cleaned_text']
+        self.runArticleAssertions(article=article, fields=fields)
+
 
 class TestExtractWithUrl(TestExtractionBase):
 
@@ -366,6 +382,19 @@ class TestExtractArabic(TestExtractionBase):
     def test_cnn_arabic(self):
         article = self.getArticle()
         fields = ['cleaned_text']
+        self.runArticleAssertions(article=article, fields=fields)
+
+
+class TestExtractKorean(TestExtractionBase):
+
+    def getConfig(self):
+        config = super(TestExtractKorean, self).getConfig()
+        config.stopwords_class = StopWordsKorean
+        return config
+
+    def test_donga_korean(self):
+        article = self.getArticle()
+        fields = ['cleaned_text', 'meta_description', 'meta_keywords']
         self.runArticleAssertions(article=article, fields=fields)
 
 
